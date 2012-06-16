@@ -1,15 +1,14 @@
 require 'rubygems/package_task'
 require 'rake/clean'
+require 'yaml'
 require 'fileutils'
 
-########################################################################
-VERSION='1.0.0'
-NAME='webgen-sass_twitter_bootstrap-extension'
-########################################################################
+NAME='sass_twitter_bootstrap'
+INFOS = YAML::load(File.read("lib/webgen/bundle/#{NAME}/info.yaml"))
 
 desc "Update the included Twitter Bootstrap files"
 task :update do
-  data_dir = "lib/webgen/extension/sass_twitter_bootstrap/data/"
+  data_dir = "lib/webgen/bundle/#{NAME}/data/"
   dir = ENV['dir']
   raise "The given path is not a directory: #{dir}" unless File.directory?(dir)
 
@@ -28,27 +27,24 @@ end
 
 CLOBBER << "VERSION"
 file 'VERSION' do
-  puts "Generating VERSION file"
-  File.open('VERSION', 'w+') {|file| file.write(VERSION + "\n")}
+  puts "Generating VERSION file for #{INFOS['version']}"
+  File.open('VERSION', 'w+') {|file| file.write(INFOS['version'] + "\n")}
 end
 
 spec = Gem::Specification.new do |s|
-  s.name = NAME
-  s.version = VERSION
-  s.summary = "webgen extension for Twitter Bootstrap framework support"
-  s.description = <<EOF
-This webgen extension provides the Sass port of the Twitter Bootstrap
-framework. It allows the easy inclusion of parts or all of the framework
-in a webgen website.
-EOF
+  s.name = "webgen-#{NAME}-bundle"
+  s.version = INFOS['version']
+  s.summary = INFOS['summary']
+  s.description = INFOS['description']
   s.files = FileList.new(['lib/**/*', 'README.md', 'LICENSE', 'VERSION'])
   s.add_dependency('sass')
   s.require_path = 'lib'
   s.has_rdoc = false
 
-  s.author = 'Thomas Leitner'
-  s.email = 't_leitner@gmx.at'
-  s.homepage = "http://github.com/gettalong/#{NAME}"
+  author_info = INFOS['author'].scan(/(?:^|,)\s*(.*?)\s*<(.*?)>/)
+  s.authors = author_info.map(&:first)
+  s.email = author_info.map(&:last)
+  s.homepage = INFOS['homepage']
 end
 
 Gem::PackageTask.new(spec).define
@@ -56,5 +52,5 @@ Gem::PackageTask.new(spec).define
 task :gem => ['VERSION']
 
 task :release => [:gem] do
-  sh "gem push pkg/#{NAME}-#{Webgen::VERSION}.gem"
+  sh "gem push pkg/webgen-#{NAME}-bundle-#{Webgen::VERSION}.gem"
 end
