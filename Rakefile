@@ -52,5 +52,5 @@ Gem::PackageTask.new(spec).define
 task :gem => ['VERSION']
 
 task :release => [:gem] do
-  sh "gem push pkg/webgen-#{NAME}-bundle-#{Webgen::VERSION}.gem"
+  sh "gem push pkg/webgen-#{NAME}-bundle-#{INFOS['version']}.gem"
 end
