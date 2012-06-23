@@ -1,12 +1,13 @@
 # Sass Twitter Bootstrap framework for webgen
 
-This is a webgen extension bundle that provides the [Sass][1] port of
+This is a [webgen] extension bundle that provides the [Sass][1] port of
 the [Twitter Bootstrap framework][2]. This allows the easy inclusion of
 parts or all of the Twitter Bootstrap framework in webgen websites.
 
 It is based on the great LESS-to-Sass translation
 [sass-twitter-bootstrap][3].
 
+[webgen]: http://webgen.rubyforge.org
 [1]: http://sass-lang.com
 [2]: http://twitter.github.com/bootstrap/
 [3]: https://github.com/jlong/sass-twitter-bootstrap
