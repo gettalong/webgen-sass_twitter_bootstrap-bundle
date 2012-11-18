@@ -16,11 +16,18 @@ task :update do
   FileUtils.cp(Dir.glob("#{dir}/img/*"), File.join(data_dir, "img"))
   FileUtils.cp(Dir.glob("#{dir}/js/*.js"), File.join(data_dir, "js"))
 
-  var_file = File.join(data_dir, 'css', 'bootstrap', '_variables.scss')
-  content = File.read(var_file)
-  content.sub!(/"..\/img\/glyphicons-halflings.png"/, "relocatable('/images/glyphicons-halflings.png')")
-  content.sub!(/"..\/img\/glyphicons-halflings-white.png"/, "relocatable('/images/glyphicons-halflings-white.png')")
-  File.open(var_file, 'w') {|f| f.write(content)}
+  file = File.join(data_dir, 'css', 'bootstrap', '_variables.scss')
+  content = File.read(file)
+  content.sub!(/"..\/img\/glyphicons-halflings.png"/, "\"/images/glyphicons-halflings.png\"")
+  content.sub!(/"..\/img\/glyphicons-halflings-white.png"/, "\"/images/glyphicons-halflings-white.png\"")
+  File.write(file, content)
+
+  file = File.join(data_dir, 'css', 'bootstrap', '_sprites.scss')
+  content = File.read(file)
+  content = "$iconSpritePath: relocatable($iconSpritePath);\n" +
+    "$iconWhiteSpritePath: relocatable($iconWhiteSpritePath);\n" +
+    content
+  File.write(file, content)
 
   puts "Done!"
 end
