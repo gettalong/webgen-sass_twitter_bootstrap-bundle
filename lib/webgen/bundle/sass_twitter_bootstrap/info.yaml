@@ -5,5 +5,5 @@ description: |
   Bootstrap framework. It allows the easy inclusion of parts or all of the
   framework in a webgen website.
 version: 1.0.0
-license: Apache License, Version 2.0
+license: MIT
 homepage: http://github.com/gettalong/webgen-sass_twitter_bootstrap-bundle
